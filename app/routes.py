@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
 from .models import Todo, User
 from . import db
 
@@ -28,6 +28,7 @@ def add():
         new_todo = Todo(task=task)
         db.session.add(new_todo)
         db.session.commit()
+        current_app.logger.info(f"[ADD] User {session.get('user_id')} menambahkan task: {task}")
     return redirect(url_for('main.index'))
 
 @main.route('/delete/<int:id>')
@@ -35,9 +36,11 @@ def add():
 def delete(id):
     todo = Todo.query.get(id)
     if todo:
+        current_app.logger.info(f"[DELETE] User {session.get('user_id')} menghapus task: {todo.task}")
         db.session.delete(todo)
         db.session.commit()
     return redirect(url_for('main.index'))
+
 
 @main.route('/toggle/<int:id>')
 @login_required
@@ -88,11 +91,14 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             session['user_id'] = user.id
+            current_app.logger.info(f"[LOGIN] User {username} berhasil login.")
             flash('Login berhasil.')
             return redirect(url_for('main.index'))
         else:
+            current_app.logger.warning(f"[LOGIN-FAILED] Percobaan login gagal untuk username: {username}")
             flash('Username atau password salah.')
     return render_template('login.html')
+
 
 # LOGOUT
 @main.route('/logout')

@@ -95,6 +95,7 @@ pipeline {
         always {
             echo '🧹 Cleanup: stop flask app'
             sh 'pkill -f "flask run" || true'
+            archiveArtifacts artifacts: 'logs/*.log', onlyIfSuccessful: false
         }
 
         failure {
