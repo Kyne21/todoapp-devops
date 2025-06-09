@@ -37,7 +37,12 @@ pipeline {
                 echo '🔒 Run Bandit security scan'
                 sh '''
                     set -e
-                    $VENV_DIR/bin/bandit -r app/ -ll -iii
+                    bandit -r app/ -ll -iii -f json -o bandit_report.json
+                    CRITICALS=$(jq '.results[] | select(.issue_severity=="HIGH")' bandit_report.json | wc -l)
+                    if [ "$CRITICALS" -gt 0 ]; then
+                    echo "❌ Found $CRITICALS HIGH severity vulnerabilities!"
+                    exit 1
+                    fi
                 '''
             }
         }
@@ -54,7 +59,6 @@ pipeline {
             }
         }
 
-        
         stage('DAST Scan') {
             steps {
                 echo '🛡️ Run OWASP ZAP scan'
@@ -66,8 +70,6 @@ pipeline {
             }
         }
 
-
-
         stage('Deploy to Staging') {
             steps {
                 echo '📦 Deploy to staging (example: docker build and push)'
@@ -78,6 +80,14 @@ pipeline {
                 '''
             }
         }
+
+        stage('Post Deployment Log Review') {
+            steps {
+                echo '📄 Menampilkan 10 baris terakhir dari flask.log'
+                sh 'tail -n 10 flask.log || true'
+            }
+        }
+
     }
 
     post {
