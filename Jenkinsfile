@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        sstage('SAST Scan') {
+        stage('SAST Scan') {
             steps {
                 echo '🔒 Run Bandit security scan'
                 sh '''
