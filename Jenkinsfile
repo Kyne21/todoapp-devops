@@ -32,20 +32,21 @@ pipeline {
             }
         }
 
-        stage('SAST Scan') {
+        sstage('SAST Scan') {
             steps {
                 echo '🔒 Run Bandit security scan'
                 sh '''
                     set -e
-                    bandit -r app/ -ll -iii -f json -o bandit_report.json
-                    CRITICALS=$(jq '.results[] | select(.issue_severity=="HIGH")' bandit_report.json | wc -l)
+                    $VENV_DIR/bin/bandit -r app/ -ll -iii -f json -o bandit_report.json
+                    CRITICALS=$($VENV_DIR/bin/jq '.results[] | select(.issue_severity=="HIGH")' bandit_report.json | wc -l)
                     if [ "$CRITICALS" -gt 0 ]; then
-                    echo "❌ Found $CRITICALS HIGH severity vulnerabilities!"
-                    exit 1
+                        echo "❌ Found $CRITICALS HIGH severity vulnerabilities!"
+                        exit 1
                     fi
                 '''
             }
         }
+
 
         stage('Deploy to Test Environment') {
             steps {
