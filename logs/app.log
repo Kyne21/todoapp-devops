@@ -1,0 +1,7 @@
+2025-06-10 03:39:56,845 [WARNING] [LOGIN-FAILED] Percobaan login gagal untuk username: darell2173 [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:98]
+2025-06-10 03:40:02,468 [WARNING] [LOGIN-FAILED] Percobaan login gagal untuk username: darell2173 [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:98]
+2025-06-10 03:40:11,487 [INFO] [LOGIN] User admin berhasil login. [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:94]
+2025-06-10 03:40:18,788 [INFO] [ADD] User 2 menambahkan task: cuci baju [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:31]
+2025-06-10 03:40:22,840 [INFO] [ADD] User 2 menambahkan task: belajar [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:31]
+2025-06-10 18:32:53,341 [WARNING] [LOGIN-FAILED] Percobaan login gagal untuk username: ZAP [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:98]
+2025-06-10 19:00:13,877 [INFO] [LOGIN] User ZAP berhasil login. [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:94]
