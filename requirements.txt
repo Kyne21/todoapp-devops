@@ -7,3 +7,4 @@ pytest-flask==1.2.0
 bandit==1.7.4
 requests==2.31.0
 Flask-WTF==1.1.1
+
