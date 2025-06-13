@@ -37,7 +37,12 @@ def logged_in_client(client):
     client.post('/login', data={'username': 'testuser', 'password': 'testpass'}, follow_redirects=True)
     return client
 
-def test_empty_todo_list(logged_in_client):
+def test_empty_todo_list(logged_in_client, app):
+    with app.app_context();
+        from models import Todo, db
+        Todo.query.delete()
+        db.session.commit()
+    
     response = logged_in_client.get('/')
     print(response.data.decode())  # untuk lihat apa isi HTML-nya
     assert response.status_code == 200
