@@ -13,3 +13,89 @@
 2025-06-13 13:00:02,266 [INFO] [LOGIN] User admin berhasil login. [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:115]
 2025-06-13 13:05:50,712 [INFO] Todo App started [in C:\Users\ryand\Documents\GitHub\todoapp\app\__init__.py:44]
 2025-06-13 13:11:23,465 [INFO] Todo App started [in C:\Users\ryand\Documents\GitHub\todoapp\app\__init__.py:46]
+2025-06-13 13:58:25,788 [INFO] Todo App started [in C:\Users\ryand\Documents\GitHub\todoapp\app\__init__.py:46]
+2025-06-13 13:59:01,447 [INFO] [LOGIN] User admin berhasil login. [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:115]
+2025-06-13 13:59:18,731 [INFO] [DELETE] User 2 menghapus task: cuci baju [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:60]
+2025-06-13 14:01:56,660 [INFO] Todo App started [in C:\Users\ryand\Documents\GitHub\todoapp\app\__init__.py:46]
+2025-06-13 14:02:03,428 [ERROR] Exception on / [GET] [in C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py", line 30, in decorated_function
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py", line 39, in index
+    return render_template('index.html', todos=todos or [], form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 151, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 132, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\ryand\Documents\GitHub\todoapp\app\templates\index.html", line 1, in top-level template code
+    {% from "bootstrap5/form.html" import render_form %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 64, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 98, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: bootstrap5/form.html
+2025-06-13 14:02:05,575 [ERROR] Exception on / [GET] [in C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py", line 30, in decorated_function
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py", line 39, in index
+    return render_template('index.html', todos=todos or [], form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 151, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 132, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\ryand\Documents\GitHub\todoapp\app\templates\index.html", line 1, in top-level template code
+    {% from "bootstrap5/form.html" import render_form %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 64, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryand\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\templating.py", line 98, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: bootstrap5/form.html
+2025-06-13 14:02:35,283 [INFO] Todo App started [in C:\Users\ryand\Documents\GitHub\todoapp\app\__init__.py:46]
+2025-06-13 14:02:44,105 [INFO] [ADD] User 2 menambahkan task: abc [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:50]
+2025-06-13 14:37:43,800 [INFO] Todo App started [in C:\Users\ryand\Documents\GitHub\todoapp\app\__init__.py:46]
+2025-06-13 14:37:56,740 [INFO] [ADD] User 2 menambahkan task: cuci pakaian [in C:\Users\ryand\Documents\GitHub\todoapp\app\routes.py:50]
