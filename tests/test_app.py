@@ -39,7 +39,7 @@ def logged_in_client(client):
 
 def test_empty_todo_list(logged_in_client, app):
     with app.app_context():
-        from models import Todo, db
+        from app.models import Todo, db
         Todo.query.delete()
         db.session.commit()
     
