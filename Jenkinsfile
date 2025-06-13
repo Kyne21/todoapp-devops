@@ -3,42 +3,38 @@ pipeline {
 
     environment {
         APP_NAME = "todo-app"
+        IMAGE_NAME = "todo-app-image"
+        CONTAINER_NAME = "todo-test-container"
         TEST_URL = "http://localhost:5000"
-        VENV_DIR = "/tmp/jenkins_venv"
     }
 
     stages {
-
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo '📦 Setup virtual environment and install dependencies'
+                echo '📦 Building Docker image'
                 sh '''
-                    set -e
-                    python3 -m venv $VENV_DIR
-                    $VENV_DIR/bin/pip install --upgrade pip
-                    $VENV_DIR/bin/pip install -r requirements.txt
+                    docker build -t ${IMAGE_NAME}:latest .
                 '''
             }
         }
 
-        stage('Test') {
+        stage('Run Unit Tests') {
             steps {
-                echo '🧪 Run pytest unit tests'
+                echo '🧪 Running pytest inside container'
                 sh '''
-                    set -e
-                    export PYTHONPATH=.
-                    $VENV_DIR/bin/pytest tests/
+                    docker run --rm ${IMAGE_NAME}:latest pytest tests/
                 '''
             }
         }
 
-        stage('SAST Scan') {
+        stage('SAST Scan (Bandit)') {
             steps {
-                echo '🔒 Run Bandit security scan'
+                echo '🔒 Running Bandit inside container'
                 sh '''
-                    set -e
-                    $VENV_DIR/bin/bandit -r app/ -ll -iii -f json -o bandit_report.json
-                    CRITICALS=$($VENV_DIR/bin/jq '.results[] | select(.issue_severity=="HIGH")' bandit_report.json | wc -l)
+                    docker run --rm ${IMAGE_NAME}:latest bandit -r . -ll -iii -f json -o bandit_report.json || true
+
+                    CRITICALS=$(docker run --rm ${IMAGE_NAME}:latest bash -c "jq '.results[] | select(.issue_severity==\\"HIGH\\")' bandit_report.json | wc -l")
+
                     if [ "$CRITICALS" -gt 0 ]; then
                         echo "❌ Found $CRITICALS HIGH severity vulnerabilities!"
                         exit 1
@@ -47,59 +43,58 @@ pipeline {
             }
         }
 
-
         stage('Deploy to Test Environment') {
             steps {
-                echo '🚀 Run Flask app in background'
+                echo '🚀 Running Flask app in Docker container'
                 sh '''
-                    set -e
-                    pkill -f "flask run" || true
-                    $VENV_DIR/bin/flask run --host=0.0.0.0 > flask.log 2>&1 &
+                    docker rm -f ${CONTAINER_NAME} || true
+                    docker run -d --name ${CONTAINER_NAME} -p 5000:5000 ${IMAGE_NAME}:latest
                     sleep 10
                 '''
             }
         }
 
-        stage('DAST Scan') {
+        stage('DAST Scan (ZAP)') {
             steps {
-                echo '🛡️ Run OWASP ZAP scan'
+                echo '🛡️ Running ZAP scan'
                 sh '''
-                    set -e
                     docker rm -f zap || true
                     docker run --name zap -u root -v $(pwd):/zap/wrk/:rw -d -p 8091:8090 ghcr.io/zaproxy/zaproxy:stable zap.sh -daemon -port 8090 -host 0.0.0.0
+                    sleep 15
+                    # Tambahkan perintah ZAP scan aktif sesuai kebutuhan
                 '''
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                echo '📦 Deploy to staging (example: docker build and push)'
+                echo '📦 (Optional) Push Docker image to registry'
                 sh '''
-                    set -e
-                    docker build -t ${APP_NAME}:latest .
-                    # docker push yourregistry/${APP_NAME}:latest
+                    docker tag ${IMAGE_NAME}:latest your-dockerhub-user/${APP_NAME}:latest
+                    # docker push your-dockerhub-user/${APP_NAME}:latest
                 '''
             }
         }
 
-        stage('Post Deployment Log Review') {
+        stage('Log Review') {
             steps {
-                echo '📄 Menampilkan 10 baris terakhir dari flask.log'
-                sh 'tail -n 10 flask.log || true'
+                echo '📄 Menampilkan 10 baris terakhir dari container log'
+                sh "docker logs ${CONTAINER_NAME} | tail -n 10"
             }
         }
-
     }
 
     post {
         always {
-            echo '🧹 Cleanup: stop flask app'
-            sh 'pkill -f "flask run" || true'
-            archiveArtifacts artifacts: 'logs/*.log', onlyIfSuccessful: false
+            echo '🧹 Cleanup: stop containers'
+            sh '''
+                docker rm -f ${CONTAINER_NAME} || true
+                docker rm -f zap || true
+            '''
         }
 
         failure {
-            echo '❌ Build failed! Please check logs.'
+            echo '❌ Build failed. Please check the logs above.'
         }
     }
 }
